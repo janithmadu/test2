@@ -167,3 +167,61 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({ success: true, data: {} });
 });
+
+
+
+
+//@desc     Get all Customer
+//@route    GET /api/v1/customer
+//@access   Public
+exports.getAllCustomer = asyncHandler(async (req, res, next) => {
+
+    const customer = await Partner.find().sort({createdAt:-1}).exec();
+    const filter = customer.filter(filter=>filter.customer===true)
+
+console.log("filter :", filter)
+    
+
+
+    res.status(200).json({ success: true, data: filter });
+
+    //res.status(200).json({ success: true, msg: 'Show all users' });
+});
+
+
+
+//@desc     Get all Vendors
+//@route    GET /api/v1/vendors
+//@access   Public
+exports.getAllVendors = asyncHandler(async (req, res, next) => {
+
+    const vendors = await Partner.find().sort({createdAt:-1}).exec();
+    const filter = vendors.filter(filter=>filter.vendor===true)
+
+console.log("filter :", filter)
+    
+
+
+    res.status(200).json({ success: true, data: filter });
+
+    //res.status(200).json({ success: true, msg: 'Show all users' });
+});
+
+
+
+//@desc     Get all Other
+//@route    GET /api/v1/others
+//@access   Public
+exports.getAllOthers = asyncHandler(async (req, res, next) => {
+
+    const others = await Partner.find().sort({createdAt:-1}).exec();
+    const filter = others.filter(filter=>filter.other===true)
+
+console.log("filter :", filter)
+    
+
+
+    res.status(200).json({ success: true, data: filter });
+
+    //res.status(200).json({ success: true, msg: 'Show all users' });
+});

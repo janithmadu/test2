@@ -6,14 +6,11 @@ const ProductAndServiceCategorySchema = new mongoose.Schema({
         required: [true, 'Please add a name']
     },
 
-    service: {
-        type: Boolean,
-        required: [true, 'Please add a service']
+    itemType: {
+        type: String,
+        required: [true, 'Please add a item type']
     },
-    product: {
-        type: Boolean,
-        required: [true, 'Please add a service']
-    },
+ 
     businessId: {
         type: String,
         required: [true, 'Please add a contact name']
