@@ -3,42 +3,47 @@ const mongoose = require('mongoose');
 const BusinessSchema = new mongoose.Schema({
     registationNumber: {
         type: String,
-        required: [true, 'Please add a name']
+        required: [true, 'Please add a register number']
     },
 
-    bussinessName: {
+    businessName: {
         type: String,
-        required: [true, 'Please add a address']
+        required: [true, 'Please add a business name']
     },
 
-    bussinessAddress1: {
+    businessAddress1: {
         type: String,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a business address 1']
     },
 
-    bussinessAddress2: {
+    businessAddress2: {
         type: String,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a business address 2']
     },
 
-    city: {
+    businessCity: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a  business city']
     },
 
-    phone: {
+    businessCountry: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a business country']
     },
 
-    email: {
+    businessPhoneNumber: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a business phone number']
     },
 
-    web: {
+    businessEmail: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a busiess email']
+    },
+
+    businessWeb: {
+        type: String,
+        required: [true, 'Please add a business web']
     },
 
     userId: {

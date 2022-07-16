@@ -10,7 +10,7 @@ const ProductAndServiceCategorySchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a item type']
     },
- 
+
     businessId: {
         type: String,
         required: [true, 'Please add a contact name']

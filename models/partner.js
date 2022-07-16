@@ -21,7 +21,7 @@ const PartnerSchema = new mongoose.Schema({
         required: [true, 'Please add a address 2']
     },
 
-   country: {
+    country: {
         type: String,
         required: [true, 'Please add a  country']
     },

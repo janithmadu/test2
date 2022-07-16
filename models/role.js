@@ -6,74 +6,196 @@ const RoleSchema = new mongoose.Schema({
         required: [true, 'Please add a role name']
     },
 
-    business: {
+    businessView: {
         type: Boolean,
-        required: [true, 'Please add a business']
+        required: [true, 'Please add a business view']
     },
 
-    locations: {
+    businessAdd: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a business add']
     },
 
-    units: {
+    businessEdit: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a business edit']
     },
-    users: {
+
+    usersView: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a user view']
     },
-    roles: {
+
+    usersAdd: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a user add']
     },
-   products: {
+
+    usersEdit: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a user edit']
     },
-   services: {
+
+    rolesView: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a role view']
     },
-   itemsCategories: {
+
+    rolesAdd: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a role add']
     },
-   itemsUom: {
+
+    rolesEdit: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a role edit']
     },
-   partnersCustomers: {
+    productsView: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a product view']
     },
-   partnersVendors: {
+
+    productsAdd: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a product add']
     },
-   partnersOther: {
+
+    productsEdit: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a product edit']
     },
- documentsCategory: {
+    servicesView: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a service view']
     },
- documentsCollections: {
+
+    servicesAdd: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a service add']
     },
- documents: {
+    servicesEdit: {
         type: Boolean,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a service edit']
+    },
+
+    itemsCategoriesView: {
+        type: Boolean,
+        required: [true, 'Please add a items-categories view']
+    },
+
+    itemsCategoriesAdd: {
+        type: Boolean,
+        required: [true, 'Please add a items-categories add']
+    },
+
+    itemsCategoriesEdit: {
+        type: Boolean,
+        required: [true, 'Please add a items-categories edit']
+    },
+    itemsUomView: {
+        type: Boolean,
+        required: [true, 'Please add a item-uom view']
+    },
+
+    itemsUomAdd: {
+        type: Boolean,
+        required: [true, 'Please add a item-uom add']
+    },
+    itemsUomEdit: {
+        type: Boolean,
+        required: [true, 'Please add a item-uom edit']
+    },
+
+    partnersCustomersView: {
+        type: Boolean,
+        required: [true, 'Please add a partners-customers view']
+    },
+
+    partnersCustomersAdd: {
+        type: Boolean,
+        required: [true, 'Please add a partners-customers add']
+    },
+
+    partnersCustomersEdit: {
+        type: Boolean,
+        required: [true, 'Please add a partners-customers edit']
+    },
+    partnersVendorsView: {
+        type: Boolean,
+        required: [true, 'Please add a partners-vendors view']
+    },
+
+    partnersVendorsAdd: {
+        type: Boolean,
+        required: [true, 'Please add a partners-vendors add']
+    },
+
+    partnersVendorsEdit: {
+        type: Boolean,
+        required: [true, 'Please add a partners-vendors edit']
+    },
+    partnersOtherView: {
+        type: Boolean,
+        required: [true, 'Please add a partners-other view']
+    },
+    partnersOtherAdd: {
+        type: Boolean,
+        required: [true, 'Please add a partners-other add']
+    },
+    partnersOtherEdit: {
+        type: Boolean,
+        required: [true, 'Please add a partners-other edit']
+    },
+    documentsCategoryView: {
+        type: Boolean,
+        required: [true, 'Please add a documents-category view']
+    },
+    documentsCategoryAdd: {
+        type: Boolean,
+        required: [true, 'Please add a documents-category add']
+    },
+    documentsCategoryEdit: {
+        type: Boolean,
+        required: [true, 'Please add a documents-category edit']
+    },
+    documentsCollectionsView: {
+        type: Boolean,
+        required: [true, 'Please add a documents-collections View']
+    },
+    documentsCollectionsAdd: {
+        type: Boolean,
+        required: [true, 'Please add a documents-collections View']
+    },
+    documentsCollectionsEdit: {
+        type: Boolean,
+        required: [true, 'Please add a documents-collections View']
+    },
+    documentsView: {
+        type: Boolean,
+        required: [true, 'Please add a documents view']
+    },
+    documentsAdd: {
+        type: Boolean,
+        required: [true, 'Please add a documents add']
+    },
+    documentsEdit: {
+        type: Boolean,
+        required: [true, 'Please add a documents edit']
+    },
+    documentsPrint: {
+        type: Boolean,
+        required: [true, 'Please add a documents print']
+    },
+    documentsApprove: {
+        type: Boolean,
+        required: [true, 'Please add a documents approve']
     },
 
     userId: {
         type: String,
         required: [true, 'Please add a userId']
     },
-        businessId: {
+    businessId: {
         type: String,
         required: [true, 'Please add a userId']
     },

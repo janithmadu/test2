@@ -2,6 +2,9 @@ const ErrorResponse = require('../Utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
 const Business = require('../models/business');
+const HeadOffice = require('../models/HeadOffice');
+const Location = require('../models/Location');
+const BusinessUnit = require('../models/BusinessUnit');
 const { Query } = require('mongoose');
 const slugify = require('slugify');
 
@@ -104,22 +107,43 @@ exports.getSinglePostSlug = asyncHandler(async (req, res, next) => {
 //@desc   Post Post
 //@route  POST /api/v1/post
 //@access Public
-exports.createPost = asyncHandler(async (req, res, next) => {
+exports.createBusiness = asyncHandler(async (req, res, next) => {
+    //Create Business
     const dataSave = new Business({
         registationNumber: req.body.registationNumber,
-        bussinessName: req.body.bussinessName,
-        bussinessAddress1: req.body.bussinessAddress1,
-        bussinessAddress2: req.body.bussinessAddress2,
-        city: req.body.city,
-        phone: req.body.phone,
-        email: req.body.email,
-        web: req.body.web,
+        businessName: req.body.businessName,
+        businessAddress1: req.body.businessAddress1,
+        businessAddress2: req.body.businessAddress2,
+        businessCity: req.body.businessCity,
+        businessCountry: req.body.businessCountry,
+        businessPhoneNumber: req.body.businessPhoneNumber,
+        businessEmail: req.body.businessEmail,
+        businessWeb: req.body.businessWeb,
         userId: req.body.userId
     });
 
     console.log(dataSave);
+
     const result = await dataSave.save();
-    res.status(201).json({ success: true, data: result });
+
+if (req.body.headOffice) {
+    //Create Head Office
+    const headOfficeCreate = new HeadOffice({
+        headOfficeAddress1: req.body.headOfficeAddress1,
+        headOfficeAddress2: req.body.headOfficeAddress2,
+        headOfficeCity: req.body.headOfficeCity,
+        headOfficeCountry: req.body.headOfficeCountry,
+        headOfficePhoneNumber: req.body.headOfficePhoneNumber,
+        headOfficeEmail: req.body.headOfficeEmail,
+        businessId: dataSave._id,
+        userId: req.body.userId,
+        headOffice: req.body.headOffice
+    });
+
+    console.log(headOfficeCreate);
+    const headOfficeResult = await headOfficeCreate.save();
+}
+    res.status(201).json({ success: true, msg:"successfully saved" });
 });
 
 //@desc   Put Post
@@ -162,4 +186,60 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
     }
 
     return res.status(200).json({ success: true, data: {} });
+});
+
+//@desc     Get all Loaction
+//@route    GET /api/v1/business/location
+//@access   Public
+exports.getAllLoaction = asyncHandler(async (req, res, next) => {
+    const locations = await Location.find().sort({ createdAt: -1 }).exec();
+
+    res.status(200).json({ success: true, data: locations });
+});
+
+//@desc   Post Location
+//@route  POST /api/v1/business/loaction
+//@access Public
+exports.createLocation = asyncHandler(async (req, res, next) => {
+    const dataSave = new Location({
+        name: req.body.name,
+        address1: req.body.address1,
+        address2: req.body.address2,
+        city: req.body.city,
+        country: req.body.country,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
+        web: req.body.web,
+        businessId: req.body.businessId,
+        userId: req.body.userId
+    });
+
+    console.log(dataSave);
+    const result = await dataSave.save();
+    res.status(201).json({ success: true, data: result });
+});
+
+//@desc     Get all business Units
+//@route    GET /api/v1/business/unit
+//@access   Public
+exports.getAllBusinessUnit = asyncHandler(async (req, res, next) => {
+    const businessUnits = await BusinessUnit.find().sort({ createdAt: -1 }).exec();
+
+    res.status(200).json({ success: true, data: businessUnits });
+});
+
+//@desc   Post Businnes Unit
+//@route  POST /api/v1/business/unit
+//@access Public
+exports.createBusinessUnit = asyncHandler(async (req, res, next) => {
+    const dataSave = new BusinessUnit({
+        name: req.body.name,
+        type: req.body.type,
+        businessId: req.body.businessId,
+        userId: req.body.userId
+    });
+
+    console.log(dataSave);
+    const result = await dataSave.save();
+    res.status(201).json({ success: true, data: result });
 });

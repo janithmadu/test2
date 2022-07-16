@@ -1,15 +1,15 @@
 const express = require('express');
-const { 
-	getPartners,
-	createPartner,
-	getSinglePost,
-	getSinglePostSlug,
-	updatePost, 
-	deletePost,
-	getAllCustomer,
-	getAllVendors,
-	getAllOthers
-	 } = require('../controllers/partners');
+const {
+    getPartners,
+    createPartner,
+    getSinglePost,
+    getSinglePostSlug,
+    updatePost,
+    deletePost,
+    getAllCustomer,
+    getAllVendors,
+    getAllOthers
+} = require('../controllers/partners');
 
 const router = express.Router();
 

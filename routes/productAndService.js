@@ -1,5 +1,15 @@
 const express = require('express');
-const { getPosts, createPost, getSinglePost, getSinglePostSlug, updatePost, deletePost,createCategory ,getCategory,getAllProducts} = require('../controllers/productAndService');
+const {
+    getPosts,
+    createPost,
+    getSinglePost,
+    getSinglePostSlug,
+    updatePost,
+    deletePost,
+    createCategory,
+    getCategory,
+    getAllProducts
+} = require('../controllers/productAndService');
 
 const router = express.Router();
 

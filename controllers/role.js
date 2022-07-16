@@ -109,8 +109,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
         roleName: req.body.roleName,
         business: req.body.business,
         locations: req.body.locations,
-        units: req.body.units,
-  
+        units: req.body.units
     });
 
     console.log(dataSave);

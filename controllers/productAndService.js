@@ -164,8 +164,6 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: {} });
 });
 
-
-
 //@desc   Post Category
 //@route  POST /api/v1/item/category
 //@access Public
@@ -181,9 +179,6 @@ exports.createCategory = asyncHandler(async (req, res, next) => {
     const result = await dataSave.save();
     res.status(201).json({ success: true, data: result });
 });
-
-
-
 
 //@desc     Get all Category
 //@route    GET /api/v1/item/category
@@ -259,20 +254,14 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
     //res.status(200).json({ success: true, msg: 'Show all users' });
 });
 
-
-
-
 //@desc     Get all Products
 //@route    GET /api/v1/products
 //@access   Public
 exports.getAllProducts = asyncHandler(async (req, res, next) => {
+    const products = await Business.find().sort({ createdAt: -1 }).exec();
+    const filter = products.filter((filter) => filter.itemsType === 'Product');
 
-    const products = await Business.find().sort({createdAt:-1}).exec();
-    const filter = products.filter(filter=>filter.itemsType==="Product")
-
-console.log("filter :", filter)
-    
-
+    console.log('filter :', filter);
 
     res.status(200).json({ success: true, data: filter });
 

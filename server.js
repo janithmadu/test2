@@ -69,11 +69,8 @@ app.use('/api/v1/role', role);
 app.use('/api/v1/item', productAndService);
 app.use('/api/v1/items/category', productAndServiceCategory);
 
-
-
 //uom
 app.use('/api/v1/uom', uom);
-
 
 app.use(errorHandler);
 

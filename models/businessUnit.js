@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 
-const UomSchema = new mongoose.Schema({
+const BusinessUnitSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please add a name']
+    },
+
+    type: {
+        type: String,
+        required: [true, 'Please add a type']
     },
 
     businessId: {
@@ -21,4 +26,4 @@ const UomSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Uom', UomSchema);
+module.exports = mongoose.model('BusinessUnit', BusinessUnitSchema);
