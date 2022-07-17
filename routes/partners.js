@@ -19,7 +19,7 @@ const { protect, authorize } = require('../middleware/auth');
 
 router.route('/').get(getPartners).post(createPartner);
 
-router.route('single/:id').get(getSinglePost).put(updatePost).delete(deletePost);
+router.route('/partnerId/:id').get(getSinglePost).put(updatePost).delete(deletePost);
 
 router.route('/customers').get(getAllCustomer);
 

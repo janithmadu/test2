@@ -197,7 +197,7 @@ const RoleSchema = new mongoose.Schema({
     },
     businessId: {
         type: String,
-        required: [true, 'Please add a userId']
+        required: [true, 'Please add a businessId']
     },
     createdAt: {
         type: Date,

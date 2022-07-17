@@ -12,17 +12,23 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a last name']
     },
+
+       role: {
+        type: String,
+        required: [true, 'Please add a last role name']
+    },
+
+       roleId: {
+        type: String,
+        required: [true, 'Please add a roleId']
+    },
     email: {
         type: String,
         required: [true, 'Please add a email'],
         unique: true,
         match: [/^\w+([\.-]?w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please add valid email']
     },
-    role: {
-        type: String,
-        enum: ['user', 'publisher'],
-        default: 'user'
-    },
+   
     designation: {
         type: String,
         required: [true, 'Please add a designation']
