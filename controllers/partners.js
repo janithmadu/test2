@@ -83,11 +83,11 @@ exports.getPartners = asyncHandler(async (req, res, next) => {
 //@route  GET /api/v1/user/:id
 //access  Public
 exports.getSinglePost = asyncHandler(async (req, res, next) => {
-    const post = await Partner.findById(req.params.id);
-    if (!post) {
+    const partner = await Partner.findOne({_id:req.params.id});
+    if (!partner) {
         return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
     }
-    res.status(200).json({ success: true, data: post });
+    res.status(200).json({ success: true, data: partner });
 });
 
 //@desc   Get single post using Slug
@@ -133,16 +133,22 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
     const post_id = await Partner.findById(req.params.id);
 
     const update = {
-        title: req.body.title,
-        description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        content: req.body.content,
-        tags: req.body.tags,
-        author: req.body.author,
-        slug: slugify(req.body.title, { lower: true })
+        businessName: req.body.businessName,
+        address1: req.body.address1,
+        address2: req.body.address2,
+        phoneNumber: req.body.phoneNumber,
+        contactPerson: req.body.contactPerson,
+        email: req.body.email,
+        businessId: req.body.businessId,
+        city: req.body.city,
+        country: req.body.country,
+        userId: req.body.userId,
+        vendor: req.body.vendor,
+        customer: req.body.customer,
+        other: req.body.other
     };
 
-    const updateData = await Business.findByIdAndUpdate(post_id, update, {
+    const updateData = await Partner.findByIdAndUpdate(post_id, update, {
         new: true,
         runValidators: true
     });
