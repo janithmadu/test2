@@ -2,9 +2,9 @@ const express = require('express');
 const {
     getPosts,
     createPost,
-    getSinglePost,
+    getSingleItem,
     getSinglePostSlug,
-    updatePost,
+    updateItem,
     deletePost,
     createCategory,
     getCategory,
@@ -19,7 +19,7 @@ const { protect, authorize } = require('../middleware/auth');
 
 router.route('/').get(getPosts).post(createPost);
 
-router.route('id/:id').get(getSinglePost).put(updatePost).delete(deletePost);
+router.route('/itemId/:id').get(getSingleItem).put(updateItem).delete(deletePost);
 
 router.route('/category').get(getCategory).post(createCategory);
 

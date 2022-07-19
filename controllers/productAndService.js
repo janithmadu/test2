@@ -1,7 +1,7 @@
 const ErrorResponse = require('../Utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
-const Business = require('../models/productAndService');
+const ProductAndService = require('../models/productAndService');
 const ProductAndServiceCategory = require('../models/productAndServiceCategory');
 const { Query } = require('mongoose');
 const slugify = require('slugify');
@@ -30,7 +30,7 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     console.log(queryStr);
 
     //Finding resource
-    query = Business.find(JSON.parse(queryStr));
+    query = ProductAndService.find(JSON.parse(queryStr));
 
     //Select Fields
     if (req.query.select) {
@@ -51,7 +51,7 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 100;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await Business.countDocuments();
+    const total = await ProductAndService.countDocuments();
 
     query = query.skip(startIndex).limit(limit);
 
@@ -83,8 +83,8 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
 //@desc   Get single post
 //@route  GET /api/v1/user/:id
 //access  Public
-exports.getSinglePost = asyncHandler(async (req, res, next) => {
-    const post = await Business.findById(req.params.id);
+exports.getSingleItem = asyncHandler(async (req, res, next) => {
+    const post = await ProductAndService.findById(req.params.id);
     if (!post) {
         return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
     }
@@ -95,7 +95,7 @@ exports.getSinglePost = asyncHandler(async (req, res, next) => {
 //@route  GET /api/v1/user/:id
 //access  Public
 exports.getSinglePostSlug = asyncHandler(async (req, res, next) => {
-    const post = await Business.findOne({ slug: req.params.slug });
+    const post = await ProductAndService.findOne({ slug: req.params.slug });
     if (!post) {
         return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
     }
@@ -106,7 +106,7 @@ exports.getSinglePostSlug = asyncHandler(async (req, res, next) => {
 //@route  POST /api/v1/post
 //@access Public
 exports.createPost = asyncHandler(async (req, res, next) => {
-    const dataSave = new Business({
+    const dataSave = new ProductAndService({
         name: req.body.name,
         categoryId: req.body.categoryId,
         itemsType: req.body.itemsType,
@@ -125,20 +125,21 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 //@desc   Put Post
 //@route  PUT /api/v1/post
 //@access Public
-exports.updatePost = asyncHandler(async (req, res, next) => {
-    const post_id = await Business.findById(req.params.id);
+exports.updateItem = asyncHandler(async (req, res, next) => {
+    const post_id = await ProductAndService.findById(req.params.id);
 
     const update = {
-        title: req.body.title,
+        name: req.body.name,
+        categoryId: req.body.categoryId,
+        itemsType: req.body.itemsType,
         description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        content: req.body.content,
-        tags: req.body.tags,
-        author: req.body.author,
-        slug: slugify(req.body.title, { lower: true })
+        sellAll: req.body.sellAll,
+        buyThis: req.body.buyThis,
+        businessId: req.body.businessId,
+        userId: req.body.userId
     };
 
-    const updateData = await Business.findByIdAndUpdate(post_id, update, {
+    const updateData = await ProductAndService.findByIdAndUpdate(post_id, update, {
         new: true,
         runValidators: true
     });
@@ -153,9 +154,9 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 //@route  DELETE /api/v1/post
 //@access Public
 exports.deletePost = asyncHandler(async (req, res, next) => {
-    const user_id = await Business.findById(req.params.id);
+    const user_id = await ProductAndService.findById(req.params.id);
 
-    const deleteData = await Business.findByIdAndDelete(user_id);
+    const deleteData = await ProductAndService.findByIdAndDelete(user_id);
 
     if (!deleteData) {
         return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
@@ -258,7 +259,7 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
 //@route    GET /api/v1/products
 //@access   Public
 exports.getAllProducts = asyncHandler(async (req, res, next) => {
-    const products = await Business.find().sort({ createdAt: -1 }).exec();
+    const products = await ProductAndService.find().sort({ createdAt: -1 }).exec();
     const filter = products.filter((filter) => filter.itemsType === 'Product');
 
     console.log('filter :', filter);

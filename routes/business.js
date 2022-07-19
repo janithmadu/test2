@@ -9,7 +9,9 @@ const {
     getAllLoaction,
     createLocation,
     getAllBusinessUnit,
-    createBusinessUnit
+    createBusinessUnit,
+    updateLocation,
+    getSingleLocation    
 } = require('../controllers/business');
 
 const router = express.Router();
@@ -23,6 +25,9 @@ router.route('/').get(getPosts).post(createBusiness);
 router.route('id/:id').get(getSinglePost).put(updatePost).delete(deletePost);
 
 router.route('/location').get(getAllLoaction).post(createLocation);
+
+router.route('/location/:id').get(getSingleLocation).put(updateLocation);
+
 
 router.route('/unit').get(getAllBusinessUnit).post(createBusinessUnit);
 

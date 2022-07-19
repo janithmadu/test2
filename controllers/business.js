@@ -219,6 +219,51 @@ exports.createLocation = asyncHandler(async (req, res, next) => {
     res.status(201).json({ success: true, data: result });
 });
 
+
+//@desc   Put Loaction
+//@route  PUT /api/v1/business/location
+//@access Public
+exports.updateLocation = asyncHandler(async (req, res, next) => {
+    const post_id = await Location.findById(req.params.id);
+
+    const update = {
+        name: req.body.name,
+        address1: req.body.address1,
+        address2: req.body.address2,
+        city: req.body.city,
+        country: req.body.country,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
+        web: req.body.web,
+        businessId: req.body.businessId,
+        userId: req.body.userId
+    };
+
+    const updateData = await Location.findByIdAndUpdate(post_id, update, {
+        new: true,
+        runValidators: true
+    });
+    if (!updateData) {
+        return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
+    }
+
+    return res.status(200).json({ success: true, data: updateData });
+});
+
+
+
+//@desc   Get single post
+//@route  GET /api/v1/user/:id
+//access  Public
+exports.getSingleLocation = asyncHandler(async (req, res, next) => {
+    const post = await Location.findById(req.params.id);
+    if (!post) {
+        return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: post });
+});
+
+
 //@desc     Get all business Units
 //@route    GET /api/v1/business/unit
 //@access   Public
