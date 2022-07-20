@@ -33,10 +33,10 @@ exports.createUsers = asyncHandler(async (req, res, next) => {
     const dataSave = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        businessUnit:req.body.businessUnit,
         phoneNumber:req.body.phoneNumber,
         businessId: req.body.businessId,
-        role: req.body.role,
+        businessUnitId: req.body.businessUnitId,
+        locationId: req.body.locationId,
         roleId: req.body.roleId,
         designation:req.body.designation,
         email: req.body.email,

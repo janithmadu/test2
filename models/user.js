@@ -13,11 +13,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please add a last name']
     },
 
-       role: {
-        type: String,
-        required: [true, 'Please add a last role name']
-    },
-
+    
        roleId: {
         type: String,
         required: [true, 'Please add a roleId']
@@ -32,6 +28,21 @@ const UserSchema = new mongoose.Schema({
     designation: {
         type: String,
         required: [true, 'Please add a designation']
+    },
+
+     businessId: {
+        type: String,
+        required: [true, 'Please add a businessId']
+    },
+
+     businessUnitId: {
+        type: String,
+        required: [true, 'Please add a businessUnitId']
+    },
+
+     locationId: {
+        type: String,
+        required: [true, 'Please add a locationId']
     },
     phoneNumber: {
         type: String,
