@@ -2,7 +2,7 @@ const express = require('express');
 const {
     getPosts,
     createBusiness,
-    getSinglePost,
+    getSingleBusiness,
     getSinglePostSlug,
     updatePost,
     deletePost,
@@ -11,7 +11,9 @@ const {
     getAllBusinessUnit,
     createBusinessUnit,
     updateLocation,
-    getSingleLocation    
+    getSingleLocation,
+    getOneBusinessForLoaction,
+    getBusinessForUnits    
 } = require('../controllers/business');
 
 const router = express.Router();
@@ -22,14 +24,17 @@ const { protect, authorize } = require('../middleware/auth');
 
 router.route('/').get(getPosts).post(createBusiness);
 
-router.route('id/:id').get(getSinglePost).put(updatePost).delete(deletePost);
+router.route('/businessId/:id').get(getSingleBusiness).put(updatePost).delete(deletePost);
 
 router.route('/location').get(getAllLoaction).post(createLocation);
 
 router.route('/location/:id').get(getSingleLocation).put(updateLocation);
 
+router.route('/location/businessId/:id').get(getOneBusinessForLoaction);
 
 router.route('/unit').get(getAllBusinessUnit).post(createBusinessUnit);
+
+router.route('/unit/:id').get(getBusinessForUnits)
 
 router.route('/slug/:slug').get(getSinglePostSlug);
 
