@@ -284,6 +284,41 @@ exports.getAllBusinessUnit = asyncHandler(async (req, res, next) => {
 });
 
 
+//@desc     Get one business one Units
+//@route    GET /api/v1/business/unit
+//@access   Public
+exports.getOneBusinessUnit = asyncHandler(async (req, res, next) => {
+    const businessUnits = await BusinessUnit.findOne({_id:req.params.id}).sort({ createdAt: -1 }).exec();
+
+    res.status(200).json({ success: true, data: businessUnits });
+});
+
+
+//@desc   Put Business Unit
+//@route  PUT /api/v1/business/location
+//@access Public
+exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
+    const post_id = await BusinessUnit.findById(req.params.id);
+
+    const update = {
+         name: req.body.name,
+        type: req.body.type,
+        location: req.body.location,
+        locationId:req.body.locationId,
+        businessId: businessId,
+        userId: req.body.userId
+    };
+
+    const updateData = await BusinessUnit.findByIdAndUpdate(post_id, update, {
+        new: true,
+        runValidators: true
+    });
+    if (!updateData) {
+        return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
+    }
+
+    return res.status(200).json({ success: true, data: updateData });
+});
 
 //@desc     Get all business Units
 //@route    GET /api/v1/business/unit
@@ -295,6 +330,19 @@ exports.getBusinessForUnits = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({ success: true, data: filter });
 });
+
+
+//@desc     Get all business Units
+//@route    GET /api/v1/business/unit
+//@access   Public
+exports.getLocationForUnits = asyncHandler(async (req, res, next) => {
+    const businessUnits = await BusinessUnit.find({locationId:req.params.id}).sort({ createdAt: -1 }).exec();
+    console.log(businessUnits)
+    const filter = businessUnits.filter((filter) => filter.location === true);
+
+    res.status(200).json({ success: true, data: filter });
+});
+
 
 //@desc   Post Businnes Unit
 //@route  POST /api/v1/business/unit
@@ -320,4 +368,32 @@ let businessId = req.body.businessId;
     console.log(dataSave);
     const result = await dataSave.save();
     res.status(201).json({ success: true, data: result });
+});
+
+
+
+
+//@desc   Put Business Unit
+//@route  PUT /api/v1/business/location
+//@access Public
+exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
+    const post_id = await BusinessUnit.findById(req.params.id);
+
+    const update = {
+        name: req.body.name,
+        type: req.body.type,
+     
+    };
+
+    console.log(post_id)
+
+    const updateData = await BusinessUnit.findByIdAndUpdate(post_id, update, {
+        new: true,
+        runValidators: true
+    });
+    if (!updateData) {
+        return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
+    }
+
+    return res.status(200).json({ success: true, data: updateData });
 });
