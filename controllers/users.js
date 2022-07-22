@@ -9,6 +9,8 @@ const User = require('../models/user');
 exports.getUsers = asyncHandler(async (req, res, next) => {
     const getData = await User.find().sort({ date: -1 }).exec();
 
+    console.log(getData)
+
     res.status(200).json({ success: true, data: getData });
 
     //res.status(200).json({ success: true, msg: 'Show all users' });

@@ -3,6 +3,7 @@ const ErrorResponse = require('../Utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const sendEmail = require('../Utils/sendEmail');
 const User = require('../models/user');
+const Role = require('../models/role');
 
 //@desc   Register user
 //@route  GET /api/v1/auth/register
@@ -38,6 +39,9 @@ exports.login = asyncHandler(async (req, res, next) => {
     //Check for user
     const user = await User.findOne({ email }).select('+password');
 
+    const permission = await Role.findOne({ _id:user.roleId });
+
+
     if (!user) {
         return next(new ErrorResponse('Invalid credentials', 401));
     }
@@ -50,8 +54,9 @@ exports.login = asyncHandler(async (req, res, next) => {
     }
 
     //Create token
+    //permission
 
-    sendTokenResponse(user, 200, res);
+    sendTokenResponseWithPermission(user,permission, 200, res);
 });
 
 //@desc   Get current logged in user
@@ -188,7 +193,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 });
 
 // Get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = (user,statusCode, res) => {
     // Create Token
     const token = user.getSignedJwtToken();
 
@@ -208,5 +213,35 @@ const sendTokenResponse = (user, statusCode, res) => {
     res.status(statusCode).cookie('token', token, options).json({
         success: true,
         token
+    });
+};
+
+
+//For permission
+// Get token from model, create cookie and send response
+const sendTokenResponseWithPermission = (user, permission,statusCode, res) => {
+    // Create Token
+    const token = user.getSignedJwtToken();
+
+    const options = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    };
+    /*
+  if(process.env.NODE_ENV === 'production') {
+    options.secure = true;
+  }
+*/
+    console.log(options);
+    console.log('cookies not working');
+    console.log('some error cookie parser in auth.js');
+
+    res.status(statusCode).cookie('token', token, options).json({
+        success: true,
+    	firstName:user.firstName,
+    	lastName: user.lastName,
+    	email:user.email,
+        token,
+        permission
     });
 };
