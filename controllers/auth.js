@@ -9,7 +9,7 @@ const Role = require('../models/role');
 //@route  GET /api/v1/auth/register
 //@access Public
 exports.register = asyncHandler(async (req, res, next) => {
-    const { firstName, lastName, email, password,phoneNumber,designation, } = req.body;
+    const { firstName, lastName, email, password, phoneNumber, designation } = req.body;
 
     //Create user
     const user = await User.create({
@@ -39,8 +39,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     //Check for user
     const user = await User.findOne({ email }).select('+password');
 
-    const permission = await Role.findOne({ _id:user.roleId });
-
+    const permission = await Role.findOne({ _id: user.roleId });
 
     if (!user) {
         return next(new ErrorResponse('Invalid credentials', 401));
@@ -56,7 +55,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     //Create token
     //permission
 
-    sendTokenResponseWithPermission(user,permission, 200, res);
+    sendTokenResponseWithPermission(user, permission, 200, res);
 });
 
 //@desc   Get current logged in user
@@ -193,7 +192,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 });
 
 // Get token from model, create cookie and send response
-const sendTokenResponse = (user,statusCode, res) => {
+const sendTokenResponse = (user, statusCode, res) => {
     // Create Token
     const token = user.getSignedJwtToken();
 
@@ -216,10 +215,9 @@ const sendTokenResponse = (user,statusCode, res) => {
     });
 };
 
-
 //For permission
 // Get token from model, create cookie and send response
-const sendTokenResponseWithPermission = (user, permission,statusCode, res) => {
+const sendTokenResponseWithPermission = (user, permission, statusCode, res) => {
     // Create Token
     const token = user.getSignedJwtToken();
 
@@ -238,9 +236,9 @@ const sendTokenResponseWithPermission = (user, permission,statusCode, res) => {
 
     res.status(statusCode).cookie('token', token, options).json({
         success: true,
-    	firstName:user.firstName,
-    	lastName: user.lastName,
-    	email:user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
         token,
         permission
     });

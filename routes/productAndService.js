@@ -8,7 +8,9 @@ const {
     deletePost,
     createCategory,
     getCategory,
-    getAllProducts
+    getAllProducts,
+    getOneCategory,
+    updateCategory
 } = require('../controllers/productAndService');
 
 const router = express.Router();
@@ -22,6 +24,8 @@ router.route('/').get(getPosts).post(createPost);
 router.route('/itemId/:id').get(getSingleItem).put(updateItem).delete(deletePost);
 
 router.route('/category').get(getCategory).post(createCategory);
+
+router.route('/category/:id').get(getOneCategory).put(updateCategory);
 
 router.route('/products').get(getAllProducts);
 

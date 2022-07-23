@@ -126,24 +126,24 @@ exports.createBusiness = asyncHandler(async (req, res, next) => {
 
     const result = await dataSave.save();
 
-if (req.body.headOffice) {
-    //Create Head Office
-    const headOfficeCreate = new HeadOffice({
-        headOfficeAddress1: req.body.headOfficeAddress1,
-        headOfficeAddress2: req.body.headOfficeAddress2,
-        headOfficeCity: req.body.headOfficeCity,
-        headOfficeCountry: req.body.headOfficeCountry,
-        headOfficePhoneNumber: req.body.headOfficePhoneNumber,
-        headOfficeEmail: req.body.headOfficeEmail,
-        businessId: dataSave._id,
-        userId: req.body.userId,
-        headOffice: req.body.headOffice
-    });
+    if (req.body.headOffice) {
+        //Create Head Office
+        const headOfficeCreate = new HeadOffice({
+            headOfficeAddress1: req.body.headOfficeAddress1,
+            headOfficeAddress2: req.body.headOfficeAddress2,
+            headOfficeCity: req.body.headOfficeCity,
+            headOfficeCountry: req.body.headOfficeCountry,
+            headOfficePhoneNumber: req.body.headOfficePhoneNumber,
+            headOfficeEmail: req.body.headOfficeEmail,
+            businessId: dataSave._id,
+            userId: req.body.userId,
+            headOffice: req.body.headOffice
+        });
 
-    console.log(headOfficeCreate);
-    const headOfficeResult = await headOfficeCreate.save();
-}
-    res.status(201).json({ success: true, msg:"successfully saved" });
+        console.log(headOfficeCreate);
+        const headOfficeResult = await headOfficeCreate.save();
+    }
+    res.status(201).json({ success: true, msg: 'successfully saved' });
 });
 
 //@desc   Put Post
@@ -201,8 +201,8 @@ exports.getAllLoaction = asyncHandler(async (req, res, next) => {
 //@route    GET /api/v1/business/location
 //@access   Public
 exports.getOneBusinessForLoaction = asyncHandler(async (req, res, next) => {
-    console.log(req.params.id)
-    const locations = await Location.find({businessId:req.params.id});
+    console.log(req.params.id);
+    const locations = await Location.find({ businessId: req.params.id });
 
     res.status(200).json({ success: true, data: locations });
 });
@@ -228,7 +228,6 @@ exports.createLocation = asyncHandler(async (req, res, next) => {
     const result = await dataSave.save();
     res.status(201).json({ success: true, data: result });
 });
-
 
 //@desc   Put Loaction
 //@route  PUT /api/v1/business/location
@@ -260,8 +259,6 @@ exports.updateLocation = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: updateData });
 });
 
-
-
 //@desc   Get single post
 //@route  GET /api/v1/user/:id
 //access  Public
@@ -273,7 +270,6 @@ exports.getSingleLocation = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: post });
 });
 
-
 //@desc     Get all business Units
 //@route    GET /api/v1/business/unit
 //@access   Public
@@ -283,16 +279,14 @@ exports.getAllBusinessUnit = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: businessUnits });
 });
 
-
 //@desc     Get one business one Units
 //@route    GET /api/v1/business/unit
 //@access   Public
 exports.getOneBusinessUnit = asyncHandler(async (req, res, next) => {
-    const businessUnits = await BusinessUnit.findOne({_id:req.params.id}).sort({ createdAt: -1 }).exec();
+    const businessUnits = await BusinessUnit.findOne({ _id: req.params.id }).sort({ createdAt: -1 }).exec();
 
     res.status(200).json({ success: true, data: businessUnits });
 });
-
 
 //@desc   Put Business Unit
 //@route  PUT /api/v1/business/location
@@ -301,10 +295,10 @@ exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
     const post_id = await BusinessUnit.findById(req.params.id);
 
     const update = {
-         name: req.body.name,
+        name: req.body.name,
         type: req.body.type,
         location: req.body.location,
-        locationId:req.body.locationId,
+        locationId: req.body.locationId,
         businessId: businessId,
         userId: req.body.userId
     };
@@ -324,43 +318,40 @@ exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
 //@route    GET /api/v1/business/unit
 //@access   Public
 exports.getBusinessForUnits = asyncHandler(async (req, res, next) => {
-    const businessUnits = await BusinessUnit.find({businessId:req.params.id}).sort({ createdAt: -1 }).exec();
-    console.log(businessUnits)
+    const businessUnits = await BusinessUnit.find({ businessId: req.params.id }).sort({ createdAt: -1 }).exec();
+    console.log(businessUnits);
     const filter = businessUnits.filter((filter) => filter.location === false);
 
     res.status(200).json({ success: true, data: filter });
 });
 
-
 //@desc     Get all business Units
 //@route    GET /api/v1/business/unit
 //@access   Public
 exports.getLocationForUnits = asyncHandler(async (req, res, next) => {
-    const businessUnits = await BusinessUnit.find({locationId:req.params.id}).sort({ createdAt: -1 }).exec();
-    console.log(businessUnits)
+    const businessUnits = await BusinessUnit.find({ locationId: req.params.id }).sort({ createdAt: -1 }).exec();
+    console.log(businessUnits);
     const filter = businessUnits.filter((filter) => filter.location === true);
 
     res.status(200).json({ success: true, data: filter });
 });
 
-
 //@desc   Post Businnes Unit
 //@route  POST /api/v1/business/unit
 //@access Public
 exports.createBusinessUnit = asyncHandler(async (req, res, next) => {
-
-let businessId = req.body.businessId;
+    let businessId = req.body.businessId;
 
     if (req.body.location) {
-    const location = await Location.findOne({ _id: req.body.locationId});
-    businessId = location.businessId;
-};
+        const location = await Location.findOne({ _id: req.body.locationId });
+        businessId = location.businessId;
+    }
 
     const dataSave = new BusinessUnit({
         name: req.body.name,
         type: req.body.type,
         location: req.body.location,
-        locationId:req.body.locationId,
+        locationId: req.body.locationId,
         businessId: businessId,
         userId: req.body.userId
     });
@@ -370,9 +361,6 @@ let businessId = req.body.businessId;
     res.status(201).json({ success: true, data: result });
 });
 
-
-
-
 //@desc   Put Business Unit
 //@route  PUT /api/v1/business/location
 //@access Public
@@ -381,11 +369,10 @@ exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
 
     const update = {
         name: req.body.name,
-        type: req.body.type,
-     
+        type: req.body.type
     };
 
-    console.log(post_id)
+    console.log(post_id);
 
     const updateData = await BusinessUnit.findByIdAndUpdate(post_id, update, {
         new: true,

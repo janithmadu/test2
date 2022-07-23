@@ -9,7 +9,7 @@ const User = require('../models/user');
 exports.getUsers = asyncHandler(async (req, res, next) => {
     const getData = await User.find().sort({ date: -1 }).exec();
 
-    console.log(getData)
+    console.log(getData);
 
     res.status(200).json({ success: true, data: getData });
 
@@ -35,14 +35,14 @@ exports.createUsers = asyncHandler(async (req, res, next) => {
     const dataSave = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        phoneNumber:req.body.phoneNumber,
+        phoneNumber: req.body.phoneNumber,
         businessId: req.body.businessId,
         businessUnitId: req.body.businessUnitId,
         locationId: req.body.locationId,
         roleId: req.body.roleId,
-        designation:req.body.designation,
+        designation: req.body.designation,
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.password
     });
 
     console.log(dataSave);

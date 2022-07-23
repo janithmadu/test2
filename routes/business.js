@@ -16,7 +16,7 @@ const {
     getBusinessForUnits,
     getOneBusinessUnit,
     updateBusinessUnit,
-    getLocationForUnits    
+    getLocationForUnits
 } = require('../controllers/business');
 
 const router = express.Router();
@@ -37,13 +37,11 @@ router.route('/location/businessId/:id').get(getOneBusinessForLoaction);
 
 router.route('/unit').get(getAllBusinessUnit).post(createBusinessUnit);
 
-router.route('/unit/:id').get(getBusinessForUnits)
+router.route('/unit/:id').get(getBusinessForUnits);
 
 router.route('/location/unit/:id').get(getLocationForUnits);
 
-
-router.route('/unit/unitId/:id').get(getOneBusinessUnit).put(updateBusinessUnit)
-
+router.route('/unit/unitId/:id').get(getOneBusinessUnit).put(updateBusinessUnit);
 
 router.route('/slug/:slug').get(getSinglePostSlug);
 

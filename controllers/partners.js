@@ -83,7 +83,7 @@ exports.getPartners = asyncHandler(async (req, res, next) => {
 //@route  GET /api/v1/user/:id
 //access  Public
 exports.getSinglePost = asyncHandler(async (req, res, next) => {
-    const partner = await Partner.findOne({_id:req.params.id});
+    const partner = await Partner.findOne({ _id: req.params.id });
     if (!partner) {
         return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
     }

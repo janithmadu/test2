@@ -13,7 +13,7 @@ const BusinessUnitSchema = new mongoose.Schema({
     location: {
         type: Boolean,
         required: [true, 'Please add a Loaction true or false']
-    }, 
+    },
     locationId: {
         type: String,
         required: [false, 'Please add a locationId']

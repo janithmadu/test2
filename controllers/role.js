@@ -110,7 +110,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
         businessView: req.body.businessView,
         businessAdd: req.body.businessAdd,
         businessEdit: req.body.businessEdit,
-        usersAdd:req.body.usersAdd,
+        usersAdd: req.body.usersAdd,
         usersView: req.body.usersView,
         usersEdit: req.body.usersEdit,
         rolesView: req.body.rolesView,
@@ -150,7 +150,6 @@ exports.createPost = asyncHandler(async (req, res, next) => {
         documentsApprove: req.body.documentsApprove,
         userId: req.body.userId,
         businessId: req.body.businessId
-
     });
 
     console.log(dataSave);

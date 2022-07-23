@@ -226,7 +226,7 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 100;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await Business.countDocuments();
+    const total = await ProductAndServiceCategory.countDocuments();
 
     query = query.skip(startIndex).limit(limit);
 
@@ -267,4 +267,38 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: filter });
 
     //res.status(200).json({ success: true, msg: 'Show all users' });
+});
+
+
+//@desc     Get one category
+//@route    GET /api/v1/business/unit
+//@access   Public
+exports.getOneCategory = asyncHandler(async (req, res, next) => {
+    const category = await ProductAndServiceCategory.findOne({ _id: req.params.id }).sort({ createdAt: -1 }).exec();
+
+    res.status(200).json({ success: true, data: category });
+});
+
+
+
+//@desc   Put Post
+//@route  PUT /api/v1/post
+//@access Public
+exports.updateCategory = asyncHandler(async (req, res, next) => {
+    const post_id = await ProductAndServiceCategory.findById(req.params.id);
+
+    const update = {
+        name: req.body.name,
+        itemType: req.body.itemType,
+    };
+
+    const updateData = await ProductAndServiceCategory.findByIdAndUpdate(post_id, update, {
+        new: true,
+        runValidators: true
+    });
+    if (!updateData) {
+        return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
+    }
+
+    return res.status(200).json({ success: true, data: updateData });
 });

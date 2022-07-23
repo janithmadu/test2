@@ -13,8 +13,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please add a last name']
     },
 
-    
-       roleId: {
+    roleId: {
         type: String,
         required: [true, 'Please add a roleId']
     },
@@ -24,23 +23,23 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         match: [/^\w+([\.-]?w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please add valid email']
     },
-   
+
     designation: {
         type: String,
         required: [true, 'Please add a designation']
     },
 
-     businessId: {
+    businessId: {
         type: String,
         required: [true, 'Please add a businessId']
     },
 
-     businessUnitId: {
+    businessUnitId: {
         type: String,
         required: [true, 'Please add a businessUnitId']
     },
 
-     locationId: {
+    locationId: {
         type: String,
         required: [true, 'Please add a locationId']
     },
