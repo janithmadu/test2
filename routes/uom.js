@@ -9,7 +9,7 @@ const { protect, authorize } = require('../middleware/auth');
 
 router.route('/').get(getPosts).post(createPost);
 
-router.route('/:id').get(getSinglePost).put(updatePost).delete(deletePost);
+router.route('/uomId/:id').get(getSinglePost).put(updatePost).delete(deletePost);
 
 router.route('/slug/:slug').get(getSinglePostSlug);
 

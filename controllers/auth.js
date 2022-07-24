@@ -65,9 +65,13 @@ exports.login = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user.id);
 
+    const role = await Role.findOne({ _id: user.roleId });
+
     res.status(200).json({
         success: true,
-        data: user
+        user,
+        role
+
     });
 });
 
