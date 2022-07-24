@@ -16,7 +16,8 @@ const {
     getBusinessForUnits,
     getOneBusinessUnit,
     updateBusinessUnit,
-    getLocationForUnits
+    getLocationForUnits,
+    getHeadOffice
 } = require('../controllers/business');
 
 const router = express.Router();
@@ -28,6 +29,10 @@ const { protect, authorize } = require('../middleware/auth');
 router.route('/').get(getPosts).post(createBusiness);
 
 router.route('/businessId/:id').get(getSingleBusiness).put(updatePost).delete(deletePost);
+
+router.route('/head-office/:id').get(getHeadOffice)
+
+
 
 router.route('/location').get(getAllLoaction).post(createLocation);
 

@@ -1,4 +1,4 @@
-const ErrorResponse = require('../Utils/errorResponse');
+const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
 const ProductAndService = require('../models/productAndService');
@@ -269,7 +269,6 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
     //res.status(200).json({ success: true, msg: 'Show all users' });
 });
 
-
 //@desc     Get one category
 //@route    GET /api/v1/business/unit
 //@access   Public
@@ -279,8 +278,6 @@ exports.getOneCategory = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: category });
 });
 
-
-
 //@desc   Put Post
 //@route  PUT /api/v1/post
 //@access Public
@@ -289,7 +286,7 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
 
     const update = {
         name: req.body.name,
-        itemType: req.body.itemType,
+        itemType: req.body.itemType
     };
 
     const updateData = await ProductAndServiceCategory.findByIdAndUpdate(post_id, update, {

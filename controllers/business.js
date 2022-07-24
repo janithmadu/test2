@@ -1,4 +1,4 @@
-const ErrorResponse = require('../Utils/errorResponse');
+const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
 const Business = require('../models/business');
@@ -187,6 +187,18 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({ success: true, data: {} });
 });
+
+
+
+//@desc     Get all business Units
+//@route    GET /api/v1/business/unit
+//@access   Public
+exports.getHeadOffice = asyncHandler(async (req, res, next) => {
+    const ho = await HeadOffice.findOne({businessId:req.params.id})
+
+    res.status(200).json({ success: true, data: ho });
+});
+
 
 //@desc     Get all Loaction
 //@route    GET /api/v1/business/location

@@ -1,7 +1,8 @@
-const ErrorResponse = require('../Utils/errorResponse');
+const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
 const User = require('../models/user');
+const Role = require('../models/role');
 
 //@desc     Get all Users
 //@route    GET /api/v1/users
@@ -9,7 +10,13 @@ const User = require('../models/user');
 exports.getUsers = asyncHandler(async (req, res, next) => {
     const getData = await User.find().sort({ date: -1 }).exec();
 
-    console.log(getData);
+    const user = await User.findById(req.user.id);
+
+    const role = await Role.findOne({ _id: req.user.roleId });
+
+    if (!role.usersView) {
+        return next(new ErrorResponse('Access denied !', 401));
+    }    
 
     res.status(200).json({ success: true, data: getData });
 
