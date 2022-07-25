@@ -146,32 +146,38 @@ exports.createBusiness = asyncHandler(async (req, res, next) => {
     res.status(201).json({ success: true, msg: 'successfully saved' });
 });
 
-//@desc   Put Post
-//@route  PUT /api/v1/post
+//@desc   Put Business only
+//@route  PUT /api/v1/business
 //@access Public
 exports.updatePost = asyncHandler(async (req, res, next) => {
     const post_id = await Business.findById(req.params.id);
 
     const update = {
-        title: req.body.title,
-        description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        content: req.body.content,
-        tags: req.body.tags,
-        author: req.body.author,
-        slug: slugify(req.body.title, { lower: true })
+        registationNumber: req.body.registationNumber,
+        businessName: req.body.businessName,
+        businessAddress1: req.body.businessAddress1,
+        businessAddress2: req.body.businessAddress2,
+        businessCity: req.body.businessCity,
+        businessCountry: req.body.businessCountry,
+        businessPhoneNumber: req.body.businessPhoneNumber,
+        businessEmail: req.body.businessEmail,
+        businessWeb: req.body.businessWeb,
+        userId: req.body.userId
     };
 
     const updateData = await Business.findByIdAndUpdate(post_id, update, {
         new: true,
         runValidators: true
     });
+
     if (!updateData) {
         return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
     }
 
     return res.status(200).json({ success: true, data: updateData });
 });
+
+
 
 //@desc   Delete Post
 //@route  DELETE /api/v1/post
@@ -188,6 +194,38 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: {} });
 });
 
+
+//@desc   Put Business only
+//@route  PUT /api/v1/business
+//@access Public
+exports.updateHeadOffice = asyncHandler(async (req, res, next) => {
+   const ho =  await HeadOffice.findOne({businessId:req.params.id})
+
+    const update = {
+            headOfficeAddress1: req.body.headOfficeAddress1,
+            headOfficeAddress2: req.body.headOfficeAddress2,
+            headOfficeCity: req.body.headOfficeCity,
+            headOfficeCountry: req.body.headOfficeCountry,
+            headOfficePhoneNumber: req.body.headOfficePhoneNumber,
+            headOfficeEmail: req.body.headOfficeEmail,
+            businessId:  req.body.businessId,
+            userId: req.body.userId,
+            headOffice: req.body.headOffice
+    };
+
+
+    const updateData = await HeadOffice.findByIdAndUpdate(ho._id, update, {
+        new: true,
+        runValidators: true
+    });
+
+    if (!updateData) {
+        return next(new ErrorResponse(`HO not found with id of ${req.params.id}`, 404));
+    }
+
+    return res.status(200).json({ success: true, data: updateData });
+
+});
 
 
 //@desc     Get all business Units

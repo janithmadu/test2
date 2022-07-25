@@ -10,8 +10,6 @@ const Role = require('../models/role');
 exports.getUsers = asyncHandler(async (req, res, next) => {
     const getData = await User.find().sort({ date: -1 }).exec();
 
-    const user = await User.findById(req.user.id);
-
     const role = await Role.findOne({ _id: req.user.roleId });
 
     if (!role.usersView) {
@@ -27,18 +25,30 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 //@route  GET /api/v1/user/:id
 //access  Public
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
-    const user = await User.findById(req.params.id);
 
-    if (!user) {
+    const role = await Role.findOne({ _id: req.user.roleId });
+
+    if (!role.usersView) {
+        return next(new ErrorResponse('Access denied !', 401));
+    }    
+
+    if (!req.user) {
         return next(new ErrorResponse(`User not found with id of ${req.params.id}`, 404));
     }
-    res.status(200).json({ success: true, data: user });
+    res.status(200).json({ success: true, data: req.user });
 });
 
 //@desc   Post User
 //@route  POST /api/v1/users
 //@access Public
 exports.createUsers = asyncHandler(async (req, res, next) => {
+
+       const role = await Role.findOne({ _id: req.user.roleId });
+
+    if (!role.usersAdd) {
+        return next(new ErrorResponse('Access denied !', 401));
+    }    
+
     const dataSave = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -61,6 +71,12 @@ exports.createUsers = asyncHandler(async (req, res, next) => {
 //@route  PUT /api/v1/users
 //@access Public
 exports.updateUser = asyncHandler(async (req, res, next) => {
+    const role = await Role.findOne({ _id: req.user.roleId });
+
+    if (!role.usersEdit) {
+        return next(new ErrorResponse('Access denied !', 401));
+    }    
+
     const user_id = await User.findById(req.params.id);
 
     const updateData = await User.findByIdAndUpdate(user_id, req.body, {
@@ -78,6 +94,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 //@route  DELETE /api/v1/users
 //@access Public
 exports.deleteUser = asyncHandler(async (req, res, next) => {
+
     const user_id = await User.findById(req.params.id);
 
     const deleteData = await User.findByIdAndDelete(user_id);
