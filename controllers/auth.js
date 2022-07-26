@@ -4,6 +4,7 @@ const asyncHandler = require('../middleware/async');
 const sendEmail = require('../utils/sendEmail');
 const User = require('../models/user');
 const Role = require('../models/role');
+const bcrypt = require('bcryptjs');
 
 //@desc   Register user
 //@route  GET /api/v1/auth/register
@@ -80,6 +81,14 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 //@access   Private
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
+
+let password = ''
+
+if (req.body.password) {
+    const salt = await bcrypt.genSalt(10);
+   password = await bcrypt.hash(req.body.password, salt);
+}
+
     const fieldsToUpdate = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -90,7 +99,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
         roleId: req.body.roleId,
         designation: req.body.designation,
         email: req.body.email,
-        password: req.body.password
+        password: password
     };
     
 

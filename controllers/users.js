@@ -79,6 +79,9 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 
     const user_id = await User.findById(req.params.id);
 
+    //$2a$10$OS92pBlcXDhe2L7.GKNe/uWFsM39cnXdC4pTxFjStzzdiO0QtGxWq
+
+
     const updateData = await User.findByIdAndUpdate(user_id, req.body, {
         new: true,
         runValidators: true
