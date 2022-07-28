@@ -16,9 +16,8 @@ connectDB();
 
 // Router files
 const users = require('./routes/users');
-//const posts = require('./routes/posts');
-//const auth = require('./routes/auth');
-//const business = require('./routes/business');
+const auth = require('./routes/auth');
+const business = require('./routes/business');
 //const branch = require('./routes/branchs');
 //const departments = require('./routes/departments');
 //const partners = require('./routes/partners');
@@ -53,9 +52,8 @@ app.use(cors());
 
 //Mount routers
 app.use('/api/v1/users', users);
-//app.use('/api/v1/posts', posts);
-//app.use('/api/v1/auth', auth);
-//app.use('/api/v1/business', business);
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/business', business);
 //app.use('/api/v1/branch', branch);
 //app.use('/api/v1/departments', departments);
 
