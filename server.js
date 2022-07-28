@@ -2,7 +2,6 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const logger = require('./middleware/logger');
-const errorHandler = require('./middleware/error');
 const morgan = require('morgan');
 const cookiesParser = require('cookie-parser');
 const cors = require('cors');
@@ -72,7 +71,6 @@ app.use('/api/v1/items/category', productAndServiceCategory);
 //uom
 app.use('/api/v1/uom', uom);
 
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
