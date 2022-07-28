@@ -16,16 +16,16 @@ connectDB();
 
 // Router files
 const users = require('./routes/users');
-const posts = require('./routes/posts');
-const auth = require('./routes/auth');
-const business = require('./routes/business');
-const branch = require('./routes/branchs');
-const departments = require('./routes/departments');
-const partners = require('./routes/partners');
-const productAndServiceCategory = require('./routes/productAndServiceCategory');
-const productAndService = require('./routes/productAndService');
-const uom = require('./routes/uom');
-const role = require('./routes/role');
+//const posts = require('./routes/posts');
+//const auth = require('./routes/auth');
+//const business = require('./routes/business');
+//const branch = require('./routes/branchs');
+//const departments = require('./routes/departments');
+//const partners = require('./routes/partners');
+//const productAndServiceCategory = require('./routes/productAndServiceCategory');
+//const productAndService = require('./routes/productAndService');
+//const uom = require('./routes/uom');
+//const role = require('./routes/role');
 
 const app = express();
 
@@ -53,24 +53,24 @@ app.use(cors());
 
 //Mount routers
 app.use('/api/v1/users', users);
-app.use('/api/v1/posts', posts);
-app.use('/api/v1/auth', auth);
-app.use('/api/v1/business', business);
-app.use('/api/v1/branch', branch);
-app.use('/api/v1/departments', departments);
+//app.use('/api/v1/posts', posts);
+//app.use('/api/v1/auth', auth);
+//app.use('/api/v1/business', business);
+//app.use('/api/v1/branch', branch);
+//app.use('/api/v1/departments', departments);
 
 //partners
-app.use('/api/v1/partner', partners);
+//app.use('/api/v1/partner', partners);
 
 //role
-app.use('/api/v1/role', role);
+//app.use('/api/v1/role', role);
 
 //items
-app.use('/api/v1/item', productAndService);
-app.use('/api/v1/items/category', productAndServiceCategory);
+//app.use('/api/v1/item', productAndService);
+//app.use('/api/v1/items/category', productAndServiceCategory);
 
 //uom
-app.use('/api/v1/uom', uom);
+//app.use('/api/v1/uom', uom);
 
 app.use(errorHandler);
 
