@@ -20,11 +20,11 @@ const auth = require('./routes/auth');
 const business = require('./routes/business');
 //const branch = require('./routes/branchs');
 //const departments = require('./routes/departments');
-//const partners = require('./routes/partners');
-//const productAndServiceCategory = require('./routes/productAndServiceCategory');
-//const productAndService = require('./routes/productAndService');
-//const uom = require('./routes/uom');
-//const role = require('./routes/role');
+const partners = require('./routes/partners');
+const productAndServiceCategory = require('./routes/productAndServiceCategory');
+const productAndService = require('./routes/productAndService');
+const uom = require('./routes/uom');
+const role = require('./routes/role');
 
 const app = express();
 
@@ -58,17 +58,17 @@ app.use('/api/v1/business', business);
 //app.use('/api/v1/departments', departments);
 
 //partners
-//app.use('/api/v1/partner', partners);
+app.use('/api/v1/partner', partners);
 
 //role
-//app.use('/api/v1/role', role);
+app.use('/api/v1/role', role);
 
 //items
-//app.use('/api/v1/item', productAndService);
-//app.use('/api/v1/items/category', productAndServiceCategory);
+app.use('/api/v1/item', productAndService);
+app.use('/api/v1/items/category', productAndServiceCategory);
 
 //uom
-//app.use('/api/v1/uom', uom);
+app.use('/api/v1/uom', uom);
 
 app.use(errorHandler);
 
