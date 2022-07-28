@@ -2,9 +2,9 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
 const Business = require('../models/business');
-const HeadOffice = require('../models/HeadOffice');
-const Location = require('../models/Location');
-const BusinessUnit = require('../models/BusinessUnit');
+const HeadOffice = require('../models/headOffice');
+const Location = require('../models/location');
+const BusinessUnit = require('../models/businessUnit');
 const { Query } = require('mongoose');
 const slugify = require('slugify');
 
