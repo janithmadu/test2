@@ -10,12 +10,7 @@ const Role = require('../models/role');
 exports.getUsers = asyncHandler(async (req, res, next) => {
     const getData = await User.find().sort({ date: -1 }).exec();
 
-    const role = await Role.findOne({ _id: req.user.roleId });
-
-    if (!role.usersView) {
-        return next(new ErrorResponse('Access denied !', 401));
-    }    
-
+ 
     res.status(200).json({ success: true, data: getData });
 
     //res.status(200).json({ success: true, msg: 'Show all users' });
@@ -43,11 +38,7 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
 //@access Public
 exports.createUsers = asyncHandler(async (req, res, next) => {
 
-       const role = await Role.findOne({ _id: req.user.roleId });
-
-    if (!role.usersAdd) {
-        return next(new ErrorResponse('Access denied !', 401));
-    }    
+    
 
     const dataSave = new User({
         firstName: req.body.firstName,
