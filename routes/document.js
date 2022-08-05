@@ -20,7 +20,9 @@ const {
     getAllCategoryDocument,
     getAllCategorySubDocument,
     getAllMainCategory,
-    getAllSubCategoryForDocument
+    getAllSubCategoryForDocument,
+    getAllCategoryCollection,
+    getAllCategorySubCollection
 } = require('../controllers/document');
 
 const router = express.Router();
@@ -41,9 +43,13 @@ router.route('/category').get(getCategory).post(createCategory);
 
 router.route('/category/type/main').get(getAllMainCategory)
 
+router.route('/category/type/collection/sub/:id').get(getAllCategorySubCollection)
+
 
 
 router.route('/category/type/document').get(getAllCategoryDocument);
+
+router.route('/category/type/collection').get(getAllCategoryCollection);
 
 router.route('/category/type/document/:id').get(getAllCategorySubDocument);
 

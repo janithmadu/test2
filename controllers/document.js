@@ -224,6 +224,37 @@ exports.getAllCategoryDocument = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: filter });
 });
 
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllCategoryCollection = asyncHandler(async (req, res, next) => {
+    const category = await ProductAndServiceCategory.find().sort({ createdAt: -1 }).exec();
+    
+    const filter = category.filter((filter) => filter.documentType === 'Collections' && filter.type==='main');
+
+    console.log('filter :', filter);
+    if (!category) {
+        return next(new ErrorResponse(`category not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: filter });
+});
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllCategorySubCollection = asyncHandler(async (req, res, next) => {
+    const category = await ProductAndServiceCategory.find({mainCategoryId:req.params.id}).sort({ createdAt: -1 }).exec();
+    console.log('category',category);
+    const filter = category.filter((filter) => filter.documentType === 'Collections');
+
+    console.log('filter :', filter);
+    if (!category) {
+        return next(new ErrorResponse(`category not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: filter });
+});
+
 //@desc   Post Category
 //@route  POST /api/v1/item/category
 //@access Public
