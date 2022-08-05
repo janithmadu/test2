@@ -119,30 +119,20 @@ exports.createBusiness = asyncHandler(async (req, res, next) => {
         businessPhoneNumber: req.body.businessPhoneNumber,
         businessEmail: req.body.businessEmail,
         businessWeb: req.body.businessWeb,
-        userId: req.body.userId
+        userId: req.user._id,
+        headOffice: req.body.headOffice,
+        headOfficeAddress1: req.body.headOfficeAddress1,
+        headOfficeAddress2: req.body.headOfficeAddress2,
+        headOfficeCity: req.body.headOfficeCity,
+        headOfficeCountry: req.body.headOfficeCountry,
+        headOfficePhoneNumber: req.body.headOfficePhoneNumber,
+        headOfficeEmail: req.body.headOfficeEmail
     });
 
     console.log(dataSave);
 
     const result = await dataSave.save();
 
-    if (req.body.headOffice) {
-        //Create Head Office
-        const headOfficeCreate = new HeadOffice({
-            headOfficeAddress1: req.body.headOfficeAddress1,
-            headOfficeAddress2: req.body.headOfficeAddress2,
-            headOfficeCity: req.body.headOfficeCity,
-            headOfficeCountry: req.body.headOfficeCountry,
-            headOfficePhoneNumber: req.body.headOfficePhoneNumber,
-            headOfficeEmail: req.body.headOfficeEmail,
-            businessId: dataSave._id,
-            userId: req.body.userId,
-            headOffice: req.body.headOffice
-        });
-
-        console.log(headOfficeCreate);
-        const headOfficeResult = await headOfficeCreate.save();
-    }
     res.status(201).json({ success: true, msg: 'successfully saved' });
 });
 
@@ -162,7 +152,14 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
         businessPhoneNumber: req.body.businessPhoneNumber,
         businessEmail: req.body.businessEmail,
         businessWeb: req.body.businessWeb,
-        userId: req.body.userId
+        userId: req.user._id,
+        headOffice: req.body.headOffice,
+        headOfficeAddress1: req.body.headOfficeAddress1,
+        headOfficeAddress2: req.body.headOfficeAddress2,
+        headOfficeCity: req.body.headOfficeCity,
+        headOfficeCountry: req.body.headOfficeCountry,
+        headOfficePhoneNumber: req.body.headOfficePhoneNumber,
+        headOfficeEmail: req.body.headOfficeEmail
     };
 
     const updateData = await Business.findByIdAndUpdate(post_id, update, {
@@ -174,10 +171,8 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
     }
 
-    return res.status(200).json({ success: true, data: updateData });
+    return res.status(200).json({ success: true, data: req.body });
 });
-
-
 
 //@desc   Delete Post
 //@route  DELETE /api/v1/post
@@ -194,25 +189,23 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: {} });
 });
 
-
 //@desc   Put Business only
 //@route  PUT /api/v1/business
 //@access Public
 exports.updateHeadOffice = asyncHandler(async (req, res, next) => {
-   const ho =  await HeadOffice.findOne({businessId:req.params.id})
+    const ho = await HeadOffice.findOne({ businessId: req.params.id });
 
     const update = {
-            headOfficeAddress1: req.body.headOfficeAddress1,
-            headOfficeAddress2: req.body.headOfficeAddress2,
-            headOfficeCity: req.body.headOfficeCity,
-            headOfficeCountry: req.body.headOfficeCountry,
-            headOfficePhoneNumber: req.body.headOfficePhoneNumber,
-            headOfficeEmail: req.body.headOfficeEmail,
-            businessId:  req.body.businessId,
-            userId: req.body.userId,
-            headOffice: req.body.headOffice
+        headOfficeAddress1: req.body.headOfficeAddress1,
+        headOfficeAddress2: req.body.headOfficeAddress2,
+        headOfficeCity: req.body.headOfficeCity,
+        headOfficeCountry: req.body.headOfficeCountry,
+        headOfficePhoneNumber: req.body.headOfficePhoneNumber,
+        headOfficeEmail: req.body.headOfficeEmail,
+        businessId: req.body.businessId,
+        userId: req.user._id,
+        headOffice: req.body.headOffice
     };
-
 
     const updateData = await HeadOffice.findByIdAndUpdate(ho._id, update, {
         new: true,
@@ -224,19 +217,16 @@ exports.updateHeadOffice = asyncHandler(async (req, res, next) => {
     }
 
     return res.status(200).json({ success: true, data: updateData });
-
 });
-
 
 //@desc     Get all business Units
 //@route    GET /api/v1/business/unit
 //@access   Public
 exports.getHeadOffice = asyncHandler(async (req, res, next) => {
-    const ho = await HeadOffice.findOne({businessId:req.params.id})
+    const ho = await HeadOffice.findOne({ businessId: req.params.id });
 
     res.status(200).json({ success: true, data: ho });
 });
-
 
 //@desc     Get all Loaction
 //@route    GET /api/v1/business/location
@@ -271,7 +261,8 @@ exports.createLocation = asyncHandler(async (req, res, next) => {
         email: req.body.email,
         web: req.body.web,
         businessId: req.body.businessId,
-        userId: req.body.userId
+        userId: req.user._id,
+        locationType: req.body.locationType
     });
 
     console.log(dataSave);
@@ -295,7 +286,8 @@ exports.updateLocation = asyncHandler(async (req, res, next) => {
         email: req.body.email,
         web: req.body.web,
         businessId: req.body.businessId,
-        userId: req.body.userId
+        userId: req.user._id,
+        locationType: req.body.locationType
     };
 
     const updateData = await Location.findByIdAndUpdate(post_id, update, {
@@ -350,7 +342,9 @@ exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
         location: req.body.location,
         locationId: req.body.locationId,
         businessId: businessId,
-        userId: req.body.userId
+        headOffice: req.body.headOffice,
+        headOfficeId: req.body.headOfficeId,
+        userId: req.user._id
     };
 
     const updateData = await BusinessUnit.findByIdAndUpdate(post_id, update, {
@@ -370,7 +364,7 @@ exports.updateBusinessUnit = asyncHandler(async (req, res, next) => {
 exports.getBusinessForUnits = asyncHandler(async (req, res, next) => {
     const businessUnits = await BusinessUnit.find({ businessId: req.params.id }).sort({ createdAt: -1 }).exec();
     console.log(businessUnits);
-    const filter = businessUnits.filter((filter) => filter.location === false);
+    const filter = businessUnits.filter((filter) => filter.location === false && filter.headOffice === false);
 
     res.status(200).json({ success: true, data: filter });
 });
@@ -382,6 +376,17 @@ exports.getLocationForUnits = asyncHandler(async (req, res, next) => {
     const businessUnits = await BusinessUnit.find({ locationId: req.params.id }).sort({ createdAt: -1 }).exec();
     console.log(businessUnits);
     const filter = businessUnits.filter((filter) => filter.location === true);
+
+    res.status(200).json({ success: true, data: filter });
+});
+
+//@desc     Get all business Units
+//@route    GET /api/v1/business/unit
+//@access   Public
+exports.getHeadOfficeForUnits = asyncHandler(async (req, res, next) => {
+    const businessUnits = await BusinessUnit.find({ headOfficeId: req.params.id }).sort({ createdAt: -1 }).exec();
+    console.log(businessUnits);
+    const filter = businessUnits.filter((filter) => filter.headOffice === true);
 
     res.status(200).json({ success: true, data: filter });
 });
@@ -403,7 +408,9 @@ exports.createBusinessUnit = asyncHandler(async (req, res, next) => {
         location: req.body.location,
         locationId: req.body.locationId,
         businessId: businessId,
-        userId: req.body.userId
+        headOffice: req.body.headOffice,
+        headOfficeId: req.body.headOfficeId,
+        userId: req.user._id
     });
 
     console.log(dataSave);

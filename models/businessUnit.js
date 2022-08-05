@@ -10,9 +10,17 @@ const BusinessUnitSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a type']
     },
+    headOffice: {
+        type: Boolean,
+        required: [false, 'Please add a HeadOffice true or false']
+    },
     location: {
         type: Boolean,
         required: [true, 'Please add a Loaction true or false']
+    },
+    headOfficeId: {
+        type: String,
+        required: [false, 'Please add a headOfficeId']
     },
     locationId: {
         type: String,

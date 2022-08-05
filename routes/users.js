@@ -8,6 +8,6 @@ router.route('/').get(getUsers).post(createUsers);
 
 //router.route('/').get(getUsers).post(createUsers);
 
-router.route('/:id').get(protect,getSingleUser).put(protect,updateUser).delete(protect,deleteUser);
+router.route('/:id').get(protect, getSingleUser).put(protect, updateUser).delete(protect, deleteUser);
 
 module.exports = router;

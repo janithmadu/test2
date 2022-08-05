@@ -2,7 +2,11 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 //User Model
 const ProductAndService = require('../models/productAndService');
-const ProductAndServiceCategory = require('../models/productAndServiceCategory');
+const ProductAndServiceCategory = require('../models/documentCategory');
+
+const DocumentCollection = require('../models/documentCollection');
+const Document = require('../models/document');
+const DocumentCollectionTemplate  = require('../models/documentCollectionTemplate')
 const { Query } = require('mongoose');
 const slugify = require('slugify');
 
@@ -30,7 +34,7 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     console.log(queryStr);
 
     //Finding resource
-    query = ProductAndService.find(JSON.parse(queryStr));
+    query = Document.find(JSON.parse(queryStr));
 
     //Select Fields
     if (req.query.select) {
@@ -51,7 +55,7 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 100;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await ProductAndService.countDocuments();
+    const total = await Document.countDocuments();
 
     query = query.skip(startIndex).limit(limit);
 
@@ -83,19 +87,37 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
 //@desc   Get single post
 //@route  GET /api/v1/user/:id
 //access  Public
-exports.getSingleItem = asyncHandler(async (req, res, next) => {
-    const post = await ProductAndService.findById(req.params.id);
-    if (!post) {
+exports.getAllSubCategoryForDocument = asyncHandler(async (req, res, next) => {
+
+    const doc = await Document.find({subCategory:req.params.id}).sort({ createdAt: -1 }).exec();
+
+console.log(doc)
+
+    if (!doc) {
         return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
     }
-    res.status(200).json({ success: true, data: post });
+    res.status(200).json({ success: true, data: doc });
+});
+
+
+//@desc   Get single post
+//@route  GET /api/v1/user/:id
+//access  Public
+exports.getSingleItem = asyncHandler(async (req, res, next) => {
+    const oneDocument = await Document.findById(req.params.id);
+       const category = await ProductAndServiceCategory.findOne({_id:oneDocument.subCategory})
+   
+    if (!oneDocument) {
+        return next(new ErrorResponse(`document not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, document: oneDocument, category:category });
 });
 
 //@desc   Get single post using Slug
 //@route  GET /api/v1/user/:id
 //access  Public
 exports.getSinglePostSlug = asyncHandler(async (req, res, next) => {
-    const post = await ProductAndService.findOne({ slug: req.params.slug });
+    const post = await Document.findOne({ slug: req.params.slug });
     if (!post) {
         return next(new ErrorResponse(`Post not found with id of ${req.params.id}`, 404));
     }
@@ -105,16 +127,18 @@ exports.getSinglePostSlug = asyncHandler(async (req, res, next) => {
 //@desc   Post Post
 //@route  POST /api/v1/post
 //@access Public
-exports.createPost = asyncHandler(async (req, res, next) => {
-    const dataSave = new ProductAndService({
-        name: req.body.name,
-        categoryId: req.body.categoryId,
-        itemsType: req.body.itemsType,
-        description: req.body.description,
-        sellAll: req.body.sellAll,
-        buyThis: req.body.buyThis,
-        businessId: req.body.businessId,
-        userId: req.body.userId
+exports.createDocument = asyncHandler(async (req, res, next) => {
+    console.log(req.body)
+    const dataSave = new Document({
+            referenceNo: req.body.referenceNo,
+            mainCategory: req.body.mainCategory,
+            subCategory: req.body.subCategory,
+            remarks: req.body.remarks,
+            documentName: req.body.documentName,
+            status: req.body.status,
+            fileUrl: req.body.fileUrl,
+            fileName: req.body.fileName,
+            userId:req.body.userId
     });
 
     console.log(dataSave);
@@ -122,24 +146,27 @@ exports.createPost = asyncHandler(async (req, res, next) => {
     res.status(201).json({ success: true, data: result });
 });
 
+
+
 //@desc   Put Post
 //@route  PUT /api/v1/post
 //@access Public
-exports.updateItem = asyncHandler(async (req, res, next) => {
-    const post_id = await ProductAndService.findById(req.params.id);
+exports.updateDocument = asyncHandler(async (req, res, next) => {
+    const post_id = await Document.findById(req.params.id);
 
     const update = {
-        name: req.body.name,
-        categoryId: req.body.categoryId,
-        itemsType: req.body.itemsType,
-        description: req.body.description,
-        sellAll: req.body.sellAll,
-        buyThis: req.body.buyThis,
-        businessId: req.body.businessId,
-        userId: req.body.userId
+         referenceNo: req.body.referenceNo,
+            mainCategory: req.body.mainCategory,
+            subCategory: req.body.subCategory,
+            remarks: req.body.remarks,
+            documentName: req.body.documentName,
+            status: req.body.status,
+            fileUrl: req.body.fileUrl,
+            fileName: req.body.fileName,
+            userId:req.body.userId
     };
 
-    const updateData = await ProductAndService.findByIdAndUpdate(post_id, update, {
+    const updateData = await Document.findByIdAndUpdate(post_id, update, {
         new: true,
         runValidators: true
     });
@@ -153,7 +180,7 @@ exports.updateItem = asyncHandler(async (req, res, next) => {
 //@desc   Delete Post
 //@route  DELETE /api/v1/post
 //@access Public
-exports.deleteItem = asyncHandler(async (req, res, next) => {
+exports.deletePost = asyncHandler(async (req, res, next) => {
     const user_id = await ProductAndService.findById(req.params.id);
 
     const deleteData = await ProductAndService.findByIdAndDelete(user_id);
@@ -165,15 +192,123 @@ exports.deleteItem = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: {} });
 });
 
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllMainCategory = asyncHandler(async (req, res, next) => {
+    const category = await ProductAndServiceCategory.find().sort({ createdAt: -1 }).exec();
+    
+    const filter = category.filter((filter) => filter.type==='main');
+
+    console.log('filter :', filter);
+    if (!category) {
+        return next(new ErrorResponse(`category not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: filter });
+});
+
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllCategoryDocument = asyncHandler(async (req, res, next) => {
+    const category = await ProductAndServiceCategory.find().sort({ createdAt: -1 }).exec();
+    
+    const filter = category.filter((filter) => filter.documentType === 'Documents' && filter.type==='main');
+
+    console.log('filter :', filter);
+    if (!category) {
+        return next(new ErrorResponse(`category not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: filter });
+});
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllCategorySubDocument = asyncHandler(async (req, res, next) => {
+    const category = await ProductAndServiceCategory.find({mainCategoryId:req.params.id}).sort({ createdAt: -1 }).exec();
+    console.log('category',category);
+    const filter = category.filter((filter) => filter.documentType === 'Documents');
+
+    console.log('filter :', filter);
+    if (!category) {
+        return next(new ErrorResponse(`category not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: filter });
+});
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllCollection = asyncHandler(async (req, res, next) => {
+    const collections = await DocumentCollection.find().sort({ createdAt: -1 }).exec();
+    if (!collections) {
+        return next(new ErrorResponse(`Collections not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: collections });
+});
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.createCollecion = asyncHandler(async (req, res, next) => {
+    console.log(req.body);
+    const dataSave = new DocumentCollection({
+        collectionName: req.body.collectionName,
+        collectionCategory:req.body.collectionCategory,
+        collectionTemplate:req.body.collectionTemplate,
+        collectionList: req.body.collectionList,
+        userId: req.body.userId
+    });
+
+    console.log(dataSave);
+    const result = await dataSave.save();
+    res.status(201).json({ success: true, data: result });
+});
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.getAllCollectionTemplate = asyncHandler(async (req, res, next) => {
+    const collections = await DocumentCollectionTemplate.find().sort({ createdAt: -1 }).exec();
+    if (!collections) {
+        return next(new ErrorResponse(`Collections not found with id of ${req.params.id}`, 404));
+    }
+    res.status(200).json({ success: true, data: collections });
+});
+
+//@desc   Post Category
+//@route  POST /api/v1/item/category
+//@access Public
+exports.createCollecionTemplate = asyncHandler(async (req, res, next) => {
+    console.log(req.body);
+    const dataSave = new DocumentCollectionTemplate({
+        collectionName: req.body.collectionName,
+        collectionCategory:req.body.collectionCategory,
+        collectionList: req.body.collectionList,
+        userId: req.body.userId
+    });
+
+    console.log(dataSave);
+    const result = await dataSave.save();
+    res.status(201).json({ success: true, data: result });
+});
+
+
 //@desc   Post Category
 //@route  POST /api/v1/item/category
 //@access Public
 exports.createCategory = asyncHandler(async (req, res, next) => {
     const dataSave = new ProductAndServiceCategory({
-        name: req.body.name,
-        itemType: req.body.itemType,
-        businessId: req.body.businessId,
-        userId: req.body.userId
+        documentType: req.body.documentType,
+        templateType:req.body.templateType,
+        mainCategoryName: req.body.mainCategoryName,
+        type: req.body.type,
+        subCategoryName: req.body.subCategoryName,
+        userId: req.body.userId,
+        mainCategoryId: req.body.mainCategoryId
     });
 
     console.log(dataSave);
@@ -185,6 +320,7 @@ exports.createCategory = asyncHandler(async (req, res, next) => {
 //@route    GET /api/v1/item/category
 //@access   Public
 exports.getCategory = asyncHandler(async (req, res, next) => {
+    console.log('this')
     console.log(req.query);
     let query;
 
@@ -255,41 +391,12 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
     //res.status(200).json({ success: true, msg: 'Show all users' });
 });
 
-
-
-exports.deleteCategory = asyncHandler(async (req, res, next) => {
-    const user_id = await ProductAndServiceCategory.findById(req.params.id);
-
-    const deleteData = await ProductAndServiceCategory.findByIdAndDelete(user_id);
-
-    if (!deleteData) {
-        return next(new ErrorResponse(`Business not found with id of ${req.params.id}`, 404));
-    }
-
-    return res.status(200).json({ success: true, data: {} });
-});
-
-
 //@desc     Get all Products
 //@route    GET /api/v1/products
 //@access   Public
 exports.getAllProducts = asyncHandler(async (req, res, next) => {
     const products = await ProductAndService.find().sort({ createdAt: -1 }).exec();
     const filter = products.filter((filter) => filter.itemsType === 'Product');
-
-    console.log('filter :', filter);
-
-    res.status(200).json({ success: true, data: filter });
-
-    //res.status(200).json({ success: true, msg: 'Show all users' });
-});
-
-//@desc     Get all Service
-//@route    GET /api/v1/products
-//@access   Public
-exports.getAllService = asyncHandler(async (req, res, next) => {
-    const products = await ProductAndService.find().sort({ createdAt: -1 }).exec();
-    const filter = products.filter((filter) => filter.itemsType === 'Service');
 
     console.log('filter :', filter);
 
@@ -314,8 +421,12 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
     const post_id = await ProductAndServiceCategory.findById(req.params.id);
 
     const update = {
-        name: req.body.name,
-        itemType: req.body.itemType
+        templateType:req.body.templateType,
+        documentType: req.body.documentType,
+        mainCategoryName: req.body.mainCategoryName,
+        type: req.body.type,
+        subCategoryName: req.body.subCategoryName,
+        mainCategoryId: req.body.mainCategoryId
     };
 
     const updateData = await ProductAndServiceCategory.findByIdAndUpdate(post_id, update, {
@@ -327,34 +438,4 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
     }
 
     return res.status(200).json({ success: true, data: updateData });
-});
-
-//@desc     Get all Service
-//@route    GET /api/v1/products
-//@access   Public
-exports.getAllProductsCategory = asyncHandler(async (req, res, next) => {
-    const products = await ProductAndServiceCategory.find().sort({ createdAt: -1 }).exec();
-    console.log(products);
-
-    const filter = products.filter((filter) => filter.itemType === 'Product');
-
-    console.log('filter :', filter);
-
-    res.status(200).json({ success: true, data: filter });
-
-    //res.status(200).json({ success: true, msg: 'Show all users' });
-});
-
-//@desc     Get all Service
-//@route    GET /api/v1/products
-//@access   Public
-exports.getAllServicesCategory = asyncHandler(async (req, res, next) => {
-    const products = await ProductAndServiceCategory.find().sort({ createdAt: -1 }).exec();
-    const filter = products.filter((filter) => filter.itemType === 'Service');
-
-    console.log('filter :', filter);
-
-    res.status(200).json({ success: true, data: filter });
-
-    //res.status(200).json({ success: true, msg: 'Show all users' });
 });

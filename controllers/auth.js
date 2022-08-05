@@ -72,7 +72,6 @@ exports.getMe = asyncHandler(async (req, res, next) => {
         success: true,
         user,
         role
-
     });
 });
 
@@ -81,13 +80,12 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 //@access   Private
 
 exports.updateDetails = asyncHandler(async (req, res, next) => {
+    let password = '';
 
-let password = ''
-
-if (req.body.password) {
-    const salt = await bcrypt.genSalt(10);
-   password = await bcrypt.hash(req.body.password, salt);
-}
+    if (req.body.password) {
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(req.body.password, salt);
+    }
 
     const fieldsToUpdate = {
         firstName: req.body.firstName,
@@ -101,7 +99,6 @@ if (req.body.password) {
         email: req.body.email,
         password: password
     };
-    
 
     const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
         new: true,

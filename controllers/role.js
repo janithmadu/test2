@@ -106,6 +106,7 @@ exports.getSinglePostSlug = asyncHandler(async (req, res, next) => {
 //@access Public
 exports.createPost = asyncHandler(async (req, res, next) => {
     const dataSave = new Business({
+    	admin: false,
         roleName: req.body.roleName,
         businessView: req.body.businessView,
         businessAdd: req.body.businessAdd,
@@ -148,8 +149,21 @@ exports.createPost = asyncHandler(async (req, res, next) => {
         documentsEdit: req.body.documentsEdit,
         documentsPrint: req.body.documentsPrint,
         documentsApprove: req.body.documentsApprove,
-        userId: req.body.userId,
-        businessId: req.body.businessId
+        businessDelete:req.body.businessDelete,
+        usersDelete:req.body.usersDelete,
+        rolesDelete:req.body.rolesDelete,
+        productsDelete:req.body.productsDelete,
+        servicesDelete:req.body.servicesDelete,
+        itemsCategoriesDelete:req.body.itemsCategoriesDelete,
+        itemsUomDelete:req.body.itemsUomDelete,
+        partnersCustomersDelete:req.body.partnersCustomersDelete,
+        partnersVendorsDelete:req.body.partnersVendorsDelete,
+        partnersOtherDelete:req.body.partnersOtherDelete,
+        documentsCategoryDelete:req.body.documentsCategoryDelete,
+        documentsCollectionsDelete:req.body.documentsCollectionsDelete,
+        documentsDelete:req.body.documentsDelete,
+
+        userId: req.body.userId
     });
 
     console.log(dataSave);
@@ -162,15 +176,66 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 //@access Public
 exports.updatePost = asyncHandler(async (req, res, next) => {
     const post_id = await Business.findById(req.params.id);
-
+console.log(req.body)
     const update = {
-        title: req.body.title,
-        description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        content: req.body.content,
-        tags: req.body.tags,
-        author: req.body.author,
-        slug: slugify(req.body.title, { lower: true })
+       admin: true,
+        roleName: req.body.roleName,
+        businessView: req.body.businessView,
+        businessAdd: req.body.businessAdd,
+        businessEdit: req.body.businessEdit,
+        usersAdd: req.body.usersAdd,
+        usersView: req.body.usersView,
+        usersEdit: req.body.usersEdit,
+        rolesView: req.body.rolesView,
+        rolesAdd: req.body.rolesAdd,
+        rolesEdit: req.body.rolesEdit,
+        productsView: req.body.productsView,
+        productsAdd: req.body.productsAdd,
+        productsEdit: req.body.productsEdit,
+        servicesView: req.body.servicesView,
+        servicesAdd: req.body.servicesAdd,
+        servicesEdit: req.body.servicesEdit,
+        itemsCategoriesView: req.body.itemsCategoriesView,
+        itemsCategoriesAdd: req.body.itemsCategoriesAdd,
+        itemsCategoriesEdit: req.body.itemsCategoriesEdit,
+        itemsUomView: req.body.itemsUomView,
+        itemsUomAdd: req.body.itemsUomAdd,
+        itemsUomEdit: req.body.itemsUomEdit,
+        partnersCustomersView: req.body.partnersCustomersView,
+        partnersCustomersAdd: req.body.partnersCustomersAdd,
+        partnersCustomersEdit: req.body.partnersCustomersEdit,
+        partnersVendorsView: req.body.partnersVendorsView,
+        partnersVendorsAdd: req.body.partnersVendorsAdd,
+        partnersVendorsEdit: req.body.partnersVendorsEdit,
+        partnersOtherView: req.body.partnersOtherView,
+        partnersOtherAdd: req.body.partnersOtherAdd,
+        partnersOtherEdit: req.body.partnersOtherEdit,
+        documentsCategoryView: req.body.documentsCategoryView,
+        documentsCategoryAdd: req.body.documentsCategoryAdd,
+        documentsCategoryEdit: req.body.documentsCategoryEdit,
+        documentsCollectionsView: req.body.documentsCollectionsView,
+        documentsCollectionsAdd: req.body.documentsCollectionsAdd,
+        documentsCollectionsEdit: req.body.documentsCollectionsEdit,
+        documentsAdd: req.body.documentsAdd,
+        documentsView: req.body.documentsView,
+        documentsEdit: req.body.documentsEdit,
+        documentsPrint: req.body.documentsPrint,
+        documentsApprove: req.body.documentsApprove,
+        businessDelete:req.body.businessDelete,
+        usersDelete:req.body.usersDelete,
+        rolesDelete:req.body.rolesDelete,
+        productsDelete:req.body.productsDelete,
+        servicesDelete:req.body.servicesDelete,
+        itemsCategoriesDelete:req.body.itemsCategoriesDelete,
+        itemsUomDelete:req.body.itemsUomDelete,
+        partnersCustomersDelete:req.body.partnersCustomersDelete,
+        partnersVendorsDelete:req.body.partnersVendorsDelete,
+        partnersOtherDelete:req.body.partnersOtherDelete,
+        documentsCategoryDelete:req.body.documentsCategoryDelete,
+        documentsCollectionsDelete:req.body.documentsCollectionsDelete,
+        documentsDelete:req.body.documentsDelete,
+
+        userId: req.body.userId
     };
 
     const updateData = await Business.findByIdAndUpdate(post_id, update, {

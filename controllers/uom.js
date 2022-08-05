@@ -123,7 +123,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
     const post_id = await Business.findById(req.params.id);
 
     const update = {
-       name: req.body.name,
+        name: req.body.name
     };
 
     const updateData = await Business.findByIdAndUpdate(post_id, update, {

@@ -16,15 +16,19 @@ connectDB();
 
 // Router files
 const users = require('./routes/users');
+const posts = require('./routes/posts');
 const auth = require('./routes/auth');
 const business = require('./routes/business');
-//const branch = require('./routes/branchs');
-//const departments = require('./routes/departments');
+const branch = require('./routes/branchs');
+const departments = require('./routes/departments');
 const partners = require('./routes/partners');
 const productAndServiceCategory = require('./routes/productAndServiceCategory');
 const productAndService = require('./routes/productAndService');
 const uom = require('./routes/uom');
 const role = require('./routes/role');
+const documents = require('./routes/document');
+//upload
+const upload = require('./routes/upload');
 
 const app = express();
 
@@ -48,14 +52,22 @@ app.use(function(req, res, next) {
 });
 */
 //cors
-app.use(cors());
+//app.use(cors());
+
+app.use(
+    cors({
+        methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+        origin: '*'
+    })
+);
 
 //Mount routers
 app.use('/api/v1/users', users);
+app.use('/api/v1/posts', posts);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/business', business);
-//app.use('/api/v1/branch', branch);
-//app.use('/api/v1/departments', departments);
+app.use('/api/v1/branch', branch);
+app.use('/api/v1/departments', departments);
 
 //partners
 app.use('/api/v1/partner', partners);
@@ -69,6 +81,12 @@ app.use('/api/v1/items/category', productAndServiceCategory);
 
 //uom
 app.use('/api/v1/uom', uom);
+
+//document
+app.use('/api/v1/document', documents);
+
+//upload
+app.use('/api/v1/upload', upload);
 
 app.use(errorHandler);
 

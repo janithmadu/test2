@@ -5,6 +5,10 @@ const RoleSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a role name']
     },
+    admin: {
+        type: Boolean,
+        required: [true, 'Please add a admin']
+    },
 
     businessView: {
         type: Boolean,
@@ -191,14 +195,63 @@ const RoleSchema = new mongoose.Schema({
         required: [true, 'Please add a documents approve']
     },
 
+ businessDelete: {
+        type: Boolean,
+        required: [true, 'Please add a business delete']
+    },
+ usersDelete: {
+        type: Boolean,
+        required: [true, 'Please add a users delete']
+    },
+ rolesDelete: {
+        type: Boolean,
+        required: [true, 'Please add a roles delete']
+    },
+ productsDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products delete']
+    },
+ servicesDelete: {
+        type: Boolean,
+        required: [true, 'Please add a services delete']
+    },
+     itemsCategoriesDelete: {
+        type: Boolean,
+        required: [true, 'Please add a items Categories Delete']
+    },
+     itemsUomDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products itemsUomDelete']
+    },
+     partnersCustomersDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products partnersCustomersDelete']
+    },
+     partnersVendorsDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products partnersVendorsDelete']
+    },
+     partnersOtherDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products partnersOtherDelete']
+    },
+     documentsCategoryDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products documentsCategoryDelete']
+    },
+     documentsCollectionsDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products documentsCollectionsDelete']
+    },
+     documentsDelete: {
+        type: Boolean,
+        required: [true, 'Please add a products documentsDelete']
+    },
     userId: {
         type: String,
         required: [true, 'Please add a userId']
     },
-    businessId: {
-        type: String,
-        required: [true, 'Please add a businessId']
-    },
+
     createdAt: {
         type: Date,
         default: Date.now

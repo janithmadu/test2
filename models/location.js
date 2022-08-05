@@ -8,21 +8,26 @@ const LocationSchema = new mongoose.Schema({
 
     address1: {
         type: String,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a addres 1']
     },
 
     address2: {
         type: String,
-        required: [true, 'Please add a email']
+        required: [true, 'Please add a address 2']
+    },
+
+    locationType: {
+        type: String,
+        required: [true, 'Please add a location type']
     },
 
     city: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a city']
     },
     country: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a country']
     },
     phoneNumber: {
         type: String,
@@ -31,12 +36,12 @@ const LocationSchema = new mongoose.Schema({
 
     email: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a email']
     },
 
     web: {
         type: String,
-        required: [true, 'Please add a contact name']
+        required: [true, 'Please add a web']
     },
 
     userId: {
