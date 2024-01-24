@@ -68,11 +68,32 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     const user_id = await User.findById(req.params.id);
 
     //$2a$10$OS92pBlcXDhe2L7.GKNe/uWFsM39cnXdC4pTxFjStzzdiO0QtGxWq
+ let password = '';
 
-    const updateData = await User.findByIdAndUpdate(user_id, req.body, {
+    if (req.body.password) {
+        const salt = await bcrypt.genSalt(10);
+        password = await bcrypt.hash(req.body.password, salt);
+    }
+
+    const fieldsToUpdate = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phoneNumber: req.body.phoneNumber,
+        businessId: req.body.businessId,
+        businessUnitId: req.body.businessUnitId,
+        locationId: req.body.locationId,
+        roleId: req.body.roleId,
+        designation: req.body.designation,
+        email: req.body.email,
+        password: password
+    };
+
+    const updateData = await User.findByIdAndUpdate(user_id, fieldsToUpdate, {
         new: true,
         runValidators: true
     });
+
+    
     if (!updateData) {
         return next(new ErrorResponse(`User not found with id of ${req.params.id}`, 404));
     }
